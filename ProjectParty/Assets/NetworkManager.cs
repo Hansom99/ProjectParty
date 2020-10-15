@@ -10,7 +10,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
+         
+        
+        PhotonNetwork.Instantiate("Player", new Vector3(PhotonNetwork.LocalPlayer.ActorNumber, 0,0), Quaternion.identity);
+        //PhotonNetwork.SerializationRate = 10;
+        //PhotonNetwork.SendRate = 20;
     }
 
     // Update is called once per frame

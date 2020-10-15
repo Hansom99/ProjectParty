@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Photon.Pun.Demo.PunBasics
 {
-	public class PlayerAnimatorManager : MonoBehaviourPun 
+	public class PlayerAnimatorManager : MonoBehaviourPunCallback 
 	{
         #region Private Fields
 

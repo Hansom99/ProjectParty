@@ -39,6 +39,9 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - updatePosition
+  - updateDeath
+  - updateHealth
+  - RPCFlip
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

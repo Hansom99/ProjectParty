@@ -1,6 +1,7 @@
+using Photon.Pun;
 using UnityEngine;
 
-public class CharacterController2D : MonoBehaviour
+public class CharacterController2D : MonoBehaviourPunCallback
 {
 	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
 	[Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;			// Amount of maxSpeed applied to crouching movement. 1 = 100%
@@ -17,8 +18,10 @@ public class CharacterController2D : MonoBehaviour
 	private Rigidbody2D m_Rigidbody2D;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 velocity = Vector3.zero;
+    private Vector3 networkPosition;
+    private float networkRotation;
 
-	private void Awake()
+    private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 	}
@@ -26,20 +29,29 @@ public class CharacterController2D : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		m_Grounded = false;
-
-		// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-		// This can be done using layers instead but Sample Assets will not overwrite your project settings.
-		Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
-		for (int i = 0; i < colliders.Length; i++)
+		if (photonView.IsMine)
 		{
-			if (colliders[i].gameObject != gameObject)
-				m_Grounded = true;
+			m_Grounded = false;
+
+			// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
+			// This can be done using layers instead but Sample Assets will not overwrite your project settings.
+			Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
+			for (int i = 0; i < colliders.Length; i++)
+			{
+				if (colliders[i].gameObject != gameObject)
+					m_Grounded = true;
+			}
 		}
+  //      else
+  //      {
+		//	m_Rigidbody2D.position = Vector3.MoveTowards(m_Rigidbody2D.position, networkPosition, Time.fixedDeltaTime);
+		//	m_Rigidbody2D.rotation += (m_Rigidbody2D.rotation - networkRotation) * Time.fixedDeltaTime * 100.0f;
+		//}
 	}
 
 
-	public void Move(float move, bool crouch, bool jump)
+
+		public void Move(float move, bool crouch, bool jump)
 	{
 		// If crouching, check to see if the character can stand up
 		if (!crouch)
@@ -108,5 +120,35 @@ public class CharacterController2D : MonoBehaviour
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+		photonView.RPC("RPCFlip", RpcTarget.Others);
 	}
+	[PunRPC]
+	void RPCFlip()
+	{ // Switch the way the player is labelled as facing.
+		m_FacingRight = !m_FacingRight;
+
+		// Multiply the player's x local scale by -1.
+		Vector3 theScale = transform.localScale;
+		theScale.x *= -1;
+		transform.localScale = theScale;
+	}
+
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    {
+    //        stream.SendNext(m_Rigidbody2D.position);
+    //        stream.SendNext(m_Rigidbody2D.rotation);
+    //        stream.SendNext(m_Rigidbody2D.velocity);
+    //    }
+    //    else
+    //    {
+    //        networkPosition = (Vector3)stream.ReceiveNext();
+    //        networkRotation = (float)stream.ReceiveNext();
+    //        m_Rigidbody2D.velocity = (Vector3)stream.ReceiveNext();
+
+    //        float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+    //        networkPosition += (Vector3)(m_Rigidbody2D.velocity * lag);
+    //    }
+    //}
 }
