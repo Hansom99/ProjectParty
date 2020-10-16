@@ -8,7 +8,9 @@ public class Health : MonoBehaviourPunCallbacks
     public float health;
     public float maxHealth = 100;
 
+    public GameObject blood;
 
+    GameObject thatblood;
 
     // Start is called before the first frame update
     void Start()
@@ -33,16 +35,29 @@ public class Health : MonoBehaviourPunCallbacks
     [PunRPC]
     void updateHealth(float health)
     {
+        
         this.health = health;
+        
         Debug.Log("Health: "+health);
+        if(thatblood == null)
+        {
+            thatblood = Instantiate(blood, transform.position+transform.up*2, transform.rotation);
+            Destroy(thatblood, 1f);
+        }
+        
         if (photonView.IsMine && this.health < 0) death();
     }
 
     void death()
     {
         photonView.RPC("updateDeath", RpcTarget.All, Vector3.zero);
-    }
 
+    }
+    IEnumerator Wait()
+    {    
+        yield return new WaitForSeconds(2);
+        
+    }
     [PunRPC]
     void updateDeath(Vector3 respawnPoint)
     {

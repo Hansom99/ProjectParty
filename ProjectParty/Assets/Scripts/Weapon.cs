@@ -1,45 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Timers;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+
     public bool isSpikes = false;
+
+    public bool isGun = false;
+
+    public Gun gunScript;
+
+    public float shotsPerSecound = 1;
+
+    public int ammunition = 15;
+
+
+    //bool cooledDown = true;
+    float lastShot;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
+        lastShot = Time.time;
+        if (gunScript != null) isGun = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void attack()
     {
-        
-    }
-    private void FixedUpdate()
-    {
-        
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
-        if(collision.gameObject.tag == "Player" && !isSpikes)
+        if (isGun && (Time.time-lastShot)>=(1/shotsPerSecound) && ammunition >0)
         {
-            //Debug.Log(collision.gameObject.tag);
-            if (!gameObject.transform.root.GetComponent<PlayerMovement>().attack) return;
-            collision.GetComponent<Health>().takeDamage(10);
+            gunScript.shoot();
+            lastShot = Time.time;
+            ammunition--;
         }
     }
-    private void OnTriggerStay2D(Collider2D collision)
+    public void showShot(Vector3 endpoint)
     {
-        if (collision.gameObject.tag == "Player" && isSpikes)
-           {
-                //Debug.Log(collision.gameObject.tag);
-                
-                collision.GetComponent<Health>().takeDamage(10);
-            }
-        
+        if(isGun)gunScript.showShot(endpoint);
     }
+   
+
 }

@@ -10,8 +10,14 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 	Animator animator;
 	public GameObject shape;
+	public Transform arm;
+	public Transform armBone;
 
 
+
+	public GameObject[] weaponPrefabs;
+	Weapon[] weapons;
+	public int selectedWeapon = 1;
 
 	public float runSpeed = 40f;
 
@@ -33,6 +39,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+		
+		List<Weapon> tmp = new List<Weapon>();
+		foreach (GameObject c in weaponPrefabs) { tmp.Add(c.GetComponent<Weapon>()); }
+		weapons = tmp.ToArray();
+		
 	}
 
 	private void Start()
@@ -96,14 +107,21 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		if (horizontalMove != 0 && !attack) animator.SetBool("Walking",true);
 		else animator.SetBool("Walking", false);
 
-
-		animator.SetBool("Attack", attack);
+		if (attack) weapons[selectedWeapon].attack();
+		//animator.SetBool("Attack", attack);
 		//Debug.Log(animator.GetFloat("speed"));
 
 
 	}
-
+	void selectWeapon()
+    {
+		if (!weapons[selectedWeapon].isGun) arm.parent = armBone;
+    }
 	
+
+
+
+
 	[PunRPC]
 	void updatePosition(Vector3 pos,float move,bool crouch,bool jump)
 	{
@@ -114,5 +132,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		controller.Move(move, crouch, jump);
 	}
 
+	[PunRPC]
+	void showShot(Vector3 endpoint)
+    {
+		weapons[selectedWeapon].showShot(endpoint);
+    }
     
 }
