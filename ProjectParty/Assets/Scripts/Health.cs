@@ -1,7 +1,9 @@
 ﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Health : MonoBehaviourPunCallbacks
 {
@@ -11,6 +13,9 @@ public class Health : MonoBehaviourPunCallbacks
     public GameObject blood;
 
     GameObject thatblood;
+
+    public event EventHandler deathEvent;
+    public event EventHandler killEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +56,8 @@ public class Health : MonoBehaviourPunCallbacks
     void death()
     {
         photonView.RPC("updateDeath", RpcTarget.All, Vector3.zero);
+        if (photonView.IsMine) deathEvent?.Invoke(this, EventArgs.Empty);
+        else killEvent?.Invoke(this, EventArgs.Empty);
 
     }
     IEnumerator Wait()

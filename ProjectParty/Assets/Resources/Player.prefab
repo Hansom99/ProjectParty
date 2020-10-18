@@ -621,6 +621,7 @@ MonoBehaviour:
   gunScript: {fileID: 8639033512880130615}
   shotsPerSecound: 1
   ammunition: 15
+  maxAmmu: 15
 --- !u!1 &2152782485154408816
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,8 +13,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	public Transform arm;
 	public Transform armBone;
 
-
-
 	public GameObject[] weaponPrefabs;
 	Weapon[] weapons;
 	public int selectedWeapon = 1;
@@ -27,18 +25,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	bool move = false;
 	public bool attack = false;
 
-	Vector3 targetPos;
-	Vector3 zero = Vector3.zero;
-	float smooth = 0.9f;
-    private float speed = 1;
-
-	private Rigidbody2D m_Rigidbody2D;
-    private Vector3 networkPosition;
-    private float networkRotation;
+	public int Ammo { get { return weapons[selectedWeapon].ammunition; } }
 
     private void Awake()
 	{
-		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+		
 		
 		List<Weapon> tmp = new List<Weapon>();
 		foreach (GameObject c in weaponPrefabs) { tmp.Add(c.GetComponent<Weapon>()); }
@@ -80,6 +71,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		else if (Input.GetButtonUp("Fire1"))
         {
 			attack = false;
+		}
+        if (Input.GetButton("Reload"))
+        {
+			weapons[selectedWeapon].reload();
+
 		}
 		//else animator.SetBool("attack", false);
 

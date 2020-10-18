@@ -17,6 +17,8 @@ public class Weapon : MonoBehaviour
 
     public int ammunition = 15;
 
+    public int maxAmmu = 15;
+
 
     //bool cooledDown = true;
     float lastShot;
@@ -44,5 +46,9 @@ public class Weapon : MonoBehaviour
         if(isGun)gunScript.showShot(endpoint);
     }
    
+    public void reload()
+    {
+        ammunition = maxAmmu;
+    }
 
 }
