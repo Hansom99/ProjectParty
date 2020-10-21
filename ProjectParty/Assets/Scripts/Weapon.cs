@@ -4,51 +4,21 @@ using System.Threading;
 using System.Timers;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public interface Weapon
 {
 
-    public bool isSpikes = false;
+    bool isSpikes { get; set; }
 
-    public bool isGun = false;
+    bool isGun { get; set; }
 
-    public Gun gunScript;
+    float shotsPerSecound { get; set; }
 
-    public float shotsPerSecound = 1;
+    int ammunition { get; set; }
 
-    public int ammunition = 15;
+    int maxAmmu { get; set; }
 
-    public int maxAmmu = 15;
-
-
-    //bool cooledDown = true;
-    float lastShot;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-        lastShot = Time.time;
-        if (gunScript != null) isGun = true;
-    }
-
-    public void attack()
-    {
-
-        if (isGun && (Time.time-lastShot)>=(1/shotsPerSecound) && ammunition >0)
-        {
-            gunScript.shoot();
-            lastShot = Time.time;
-            ammunition--;
-        }
-    }
-    public void showShot(Vector3 endpoint)
-    {
-        if(isGun)gunScript.showShot(endpoint);
-    }
-   
-    public void reload()
-    {
-        ammunition = maxAmmu;
-    }
+    void showShot(Vector3 endpoint);
+    void attack();
+    void reload();
 
 }
