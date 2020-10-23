@@ -8,13 +8,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 	public CharacterController2D controller;
 
-	Animator animator;
+	public Animator animator;
 	public GameObject shape;
 	public Transform arm;
 	public Transform armBone;
 
-	public GameObject[] weaponPrefabs;
-	Weapon[] weapons;
+	//public GameObject[] weaponPrefabs;
+	//Weapon[] weapons;
 	public int selectedWeapon = 1;
 
 	public float runSpeed = 40f;
@@ -25,21 +25,21 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	bool move = false;
 	public bool attack = false;
 
-	public int Ammo { get { return weapons[selectedWeapon].ammunition; } }
+	public int Ammo { get { return 0; } }
 
     private void Awake()
 	{
 		
 		
-		List<Weapon> tmp = new List<Weapon>();
-		foreach (GameObject c in weaponPrefabs) { tmp.Add(c.GetComponent<Weapon>()); }
-		weapons = tmp.ToArray();
+		//List<Weapon> tmp = new List<Weapon>();
+		//foreach (GameObject c in weaponPrefabs) { tmp.Add(c.GetComponent<Weapon>()); }
+		//weapons = tmp.ToArray();
 		
 	}
 
 	private void Start()
     {
-		animator = shape.GetComponent<Animator>();
+		//animator = shape.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -74,7 +74,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		}
         if (Input.GetButton("Reload"))
         {
-			weapons[selectedWeapon].reload();
+			//weapons[selectedWeapon].reload();
 
 		}
 		//else animator.SetBool("attack", false);
@@ -100,10 +100,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 
 		//animator.SetBool("jump", jump);
-		if (horizontalMove != 0 && !attack) animator.SetBool("Walking",true);
-		else animator.SetBool("Walking", false);
+		if (horizontalMove != 0) animator.SetBool("isRunning", true);
+		else animator.SetBool("isRunning", false);
 
-		if (attack) weapons[selectedWeapon].attack();
+		//Debug.Log(animator.get);
+		//if (attack) weapons[selectedWeapon].attack();
 		//animator.SetBool("Attack", attack);
 		//Debug.Log(animator.GetFloat("speed"));
 
@@ -111,7 +112,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	}
 	void selectWeapon()
     {
-		if (!weapons[selectedWeapon].isGun) arm.parent = armBone;
+		//if (!weapons[selectedWeapon].isGun) arm.parent = armBone;
     }
 	
 
@@ -131,7 +132,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	[PunRPC]
 	void showShot(Vector3 endpoint)
     {
-		weapons[selectedWeapon].showShot(endpoint);
+		//weapons[selectedWeapon].showShot(endpoint);
     }
     
 }
