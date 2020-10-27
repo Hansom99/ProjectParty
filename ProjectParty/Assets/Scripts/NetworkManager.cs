@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-    GameObject myPlayer;
+    public GameObject myPlayer;
 
     Health Health;
     PlayerMovement playerMovement;
@@ -21,7 +21,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
          
         

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
-
+	[SerializeField] bool playGround = false;
 	public CharacterController2D controller;
 
 	public Animator animator;
@@ -23,7 +23,14 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	bool jump = false;
 	bool crouch = false;
 	bool movefast = false;
+	bool move = false;
 	public bool attack = false;
+	//für Character Play ground dass man kontrolle über charakter hat
+	
+
+
+	float doubleClickSpeed = 0.2f;
+	float lastClick;
 
 	public int Ammo { get { return 0; } }
 
@@ -39,25 +46,47 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 	private void Start()
     {
+		
+		
+
 		//animator = shape.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update () {
 
-		if (!photonView.IsMine) return;
+		if (!photonView.IsMine && !playGround) return;
 
 		horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+		 
+  //      if (Input.GetButtonDown("Horizontal"))
+  //      {
+		//	if(Time.time - lastClick <= doubleClickSpeed)
+  //          {
+		//		//Double Click event....
+		//		movefast = true;
+  //          }
+		//	else lastClick = Time.time;
+  //      }
+		//if(horizontalMove == 0)
+  //      {
+		//	move = false;
+		//	movefast = false;
+  //      }
+		//if (!movefast && Time.time - lastClick >= 0.5) horizontalMove = 0;
+
+		//animator.SetBool("runningFast", movefast);
+
+
 
 		if (Input.GetButtonDown("Jump"))
 		{
 			jump = true;
 			//animator.SetBool("jump", jump);
-			
+			//if (attack && movefast) animator.SetTrigger("kick");
+
 		}
-		if (Input.GetButtonDown("Fire3")) movefast = true;
-		else if (Input.GetButtonUp("Fire3")) movefast = false;
-		animator.SetBool("runningFast", movefast);
+
 		if (Input.GetButtonDown("Crouch"))
 		{
 			crouch = true;
@@ -65,18 +94,26 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		{
 			crouch = false;
 		}
+
+
+
         if (Input.GetButtonDown("Fire1"))
         {
+
+			//if (crouch && movefast) animator.SetTrigger("slide");
+			
 			attack = true;
 			Debug.Log("attack");
 		}
 		else if (Input.GetButtonUp("Fire1"))
         {
-			animator.SetTrigger("attack");
+			
 			
 			attack = false;
 		}
-        if (Input.GetButton("Reload"))
+
+		//animator.SetBool("attack", attack);
+		if (Input.GetButton("Reload"))
         {
 			//weapons[selectedWeapon].reload();
 
@@ -87,29 +124,21 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 	void FixedUpdate ()
 	{
-		if (!photonView.IsMine) {
+		if (!photonView.IsMine && !playGround) {
 			//transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref zero, smooth);
-			
-
 			return;
 		}
 		// Move this character
-		if (animator.GetCurrentAnimatorStateInfo(0).IsName("jab")) horizontalMove = 0;
+		//if (animator.GetCurrentAnimatorStateInfo(0).IsName("jab")) horizontalMove = 0;
 
-		if (movefast) horizontalMove *= 4;
+		//if (movefast) horizontalMove *= 4;
 		//Send to other Clients new Position
 		//photonView.RPC("updatePosition", RpcTarget.Others, transform.position, horizontalMove * Time.fixedDeltaTime,crouch,jump);
-		controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
-
-		jump = false;
-
-
-		//animator.SetBool("jump", jump);
 		
-		//Debug.Log(animator.get);
-		//if (attack) weapons[selectedWeapon].attack();
-		//animator.SetBool("Attack", attack);
-		//Debug.Log(animator.GetFloat("speed"));
+		
+		
+		controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
+		jump = false;
 
 
 	}

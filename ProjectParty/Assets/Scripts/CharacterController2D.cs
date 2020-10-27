@@ -1,8 +1,11 @@
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
+using UnityEngine.PlayerLoop;
 
 public class CharacterController2D : MonoBehaviourPunCallback
 {
+	[SerializeField] bool playGround = false;
 	public Animator animator;
 
 	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
@@ -21,23 +24,40 @@ public class CharacterController2D : MonoBehaviourPunCallback
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 velocity = Vector3.zero;
 
+	
+	public Transform target;
+	Camera camera;
+    [SerializeField] private LayerMask mouseAimLayer;
+
     private void Awake()
 	{
 		m_Rigidbody = GetComponent<Rigidbody>();
+		camera = Camera.main;
+
+        if (photonView.IsMine || playGround)
+        {
+			//target = new GameObject().transform;
+			//rig.GetComponent<MultiAimConstraint>().
+        }
 	}
 
 
 	private void FixedUpdate()
 	{
-		if (photonView.IsMine)
+		if (photonView.IsMine || playGround)
 		{
 			m_Grounded = false;
+
+			//Get mouse pos on mousePointLayer
+
+
+
 
 			// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
 			// This can be done using layers instead but Sample Assets will not overwrite your project settings.
 			RaycastHit[] colliders = Physics.RaycastAll(m_GroundCheck.position, -transform.up, 2 * k_GroundedRadius);
-			Debug.DrawRay(m_GroundCheck.position, -transform.up*k_GroundedRadius);
-			Debug.Log(colliders.Length);
+			//Debug.DrawRay(m_GroundCheck.position, -transform.up*k_GroundedRadius);
+			//Debug.Log(colliders.Length);
 			for (int i = 0; i < colliders.Length; i++)
 			{
 			
@@ -66,6 +86,8 @@ public class CharacterController2D : MonoBehaviourPunCallback
 			}
 		}
 
+		
+
 		//only control the player if grounded or airControl is turned on
 		if (m_Grounded || m_AirControl)
 		{
@@ -92,13 +114,13 @@ public class CharacterController2D : MonoBehaviourPunCallback
             m_Rigidbody.velocity = Vector3.SmoothDamp(m_Rigidbody.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
 
             // If the input is moving the player right and the player is facing left...
-            if (move > 0 && !m_FacingRight)
+            if (target.position.x > transform.position.x && !m_FacingRight)
 			{
 				// ... flip the player.
 				Flip();
 			}
 			// Otherwise if the input is moving the player left and the player is facing right...
-			else if (move < 0 && m_FacingRight)
+			else if (target.position.x < transform.position.x && m_FacingRight)
 			{
 				// ... flip the player.
 				Flip();
@@ -113,11 +135,20 @@ public class CharacterController2D : MonoBehaviourPunCallback
 			m_Rigidbody.AddForce(new Vector2(0f, m_JumpForce));
 			
 		}
-	
-		if(m_Rigidbody.velocity.x != 0) animator.SetBool("isRunning", true);
-		else animator.SetBool("isRunning", false);
-		animator.SetBool("grounded", m_Grounded);
 
+		if (move != 0)
+		{
+			// set Backward
+			animator.SetBool("isMoving", true);
+		}
+		else
+		{
+			// backward flase;
+			animator.SetBool("isMoving", false);
+		}
+		animator.SetBool("grounded", m_Grounded);
+		animator.SetBool("kneel", crouch);
+		
 
 	}
 
@@ -128,9 +159,10 @@ public class CharacterController2D : MonoBehaviourPunCallback
 		m_FacingRight = !m_FacingRight;
 
 		// Multiply the player's x local scale by -1.
-		Vector3 theScale = transform.localScale;
-		theScale.x *= -1;
-		transform.localScale = theScale;
+		Quaternion rot = Quaternion.identity;
+		if (m_FacingRight) rot.y = 0;
+		else rot.y = 180;
+		transform.localRotation = rot;
 		photonView.RPC("RPCFlip", RpcTarget.Others);
 	}
 	[PunRPC]
@@ -144,22 +176,43 @@ public class CharacterController2D : MonoBehaviourPunCallback
 		transform.localScale = theScale;
 	}
 
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.IsWriting)
-    //    {
-    //        stream.SendNext(m_Rigidbody2D.position);
-    //        stream.SendNext(m_Rigidbody2D.rotation);
-    //        stream.SendNext(m_Rigidbody2D.velocity);
-    //    }
-    //    else
-    //    {
-    //        networkPosition = (Vector3)stream.ReceiveNext();
-    //        networkRotation = (float)stream.ReceiveNext();
-    //        m_Rigidbody2D.velocity = (Vector3)stream.ReceiveNext();
+	//public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	//{
+	//    if (stream.IsWriting)
+	//    {
+	//        stream.SendNext(m_Rigidbody2D.position);
+	//        stream.SendNext(m_Rigidbody2D.rotation);
+	//        stream.SendNext(m_Rigidbody2D.velocity);
+	//    }
+	//    else
+	//    {
+	//        networkPosition = (Vector3)stream.ReceiveNext();
+	//        networkRotation = (float)stream.ReceiveNext();
+	//        m_Rigidbody2D.velocity = (Vector3)stream.ReceiveNext();
 
-    //        float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
-    //        networkPosition += (Vector3)(m_Rigidbody2D.velocity * lag);
-    //    }
-    //}
+	//        float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+	//        networkPosition += (Vector3)(m_Rigidbody2D.velocity * lag);
+	//    }
+	//}
+
+	void Update()
+	{
+
+		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		if(Physics.Raycast(ray,out hit, Mathf.Infinity, mouseAimLayer))
+        {
+			target.position = hit.point;
+        }
+
+		Debug.Log(Input.mousePosition);
+		//Debug.Log(target.position);
+		//Debug.DrawLine(transform.position, target.position);
+
+		
+
+		//Debug.Log(target.position);
+	}
+
+
 }
