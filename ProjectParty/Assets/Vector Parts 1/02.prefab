@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8286271114517011843}
   - component: {fileID: 244241365046621706}
-  - component: {fileID: 4362762157675366086}
+  - component: {fileID: 7851819058707318442}
   m_Layer: 0
   m_Name: Face 01
   m_TagString: Untagged
@@ -114,7 +114,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4362762157675366086
+--- !u!114 &7851819058707318442
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -384,7 +384,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3750171846540700147}
-  m_LocalRotation: {x: -0, y: -0, z: 0.869579, w: -0.49379387}
+  m_LocalRotation: {x: 0, y: 0, z: 0.98983437, w: -0.14222518}
   m_LocalPosition: {x: 1.2532269, y: -0.4970006, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
