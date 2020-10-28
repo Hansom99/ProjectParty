@@ -77,6 +77,7 @@ public class Health : MonoBehaviourPunCallbacks
     {
         transform.position = respawnPoint;
         health = maxHealth;
+        healthbar.SetHealth(this.health);
         Debug.Log("Died");
     }
 }

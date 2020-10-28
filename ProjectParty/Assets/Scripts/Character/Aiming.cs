@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon;
+using Photon.Pun;
 
-public class Aiming : MonoBehaviour
+public class Aiming : MonoBehaviourPunCallbacks
 {
 
 
@@ -16,6 +18,7 @@ public class Aiming : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!photonView.IsMine) return;
         camera = Camera.main;
         characterController = transform.root.GetComponent<CharacterController2D>();
     }
@@ -23,7 +26,7 @@ public class Aiming : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isAiming) return;
+        if (!isAiming || !photonView.IsMine) return;
 
         target.position = camera.ScreenToWorldPoint(Input.mousePosition);
         
