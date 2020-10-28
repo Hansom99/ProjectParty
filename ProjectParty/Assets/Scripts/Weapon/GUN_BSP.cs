@@ -7,11 +7,6 @@ public class GUN_BSP : MonoBehaviourPunCallback, Weapon
 {
 
 
-
-
-    /// <summary>
-    /// interface Variablen
-    /// </summary>
     private float shotsPerSecound;
     public float ShotsPerSecound { get { return shotsPerSecound; } set { shotsPerSecound = value; } }
     private int ammunition;

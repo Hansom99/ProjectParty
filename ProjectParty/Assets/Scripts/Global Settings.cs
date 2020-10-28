@@ -4,8 +4,8 @@ using Unity;
 
 public static class GlobalSettings
 {
-    public static string selectedCharacter;
-
+    public static string selectedCharacter = "Player";
+    
 
 
 
