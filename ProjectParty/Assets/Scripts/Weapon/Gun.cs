@@ -15,9 +15,9 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
     /// Speicher Zeit des letzten Schusses.
     /// </summary>
     private float lastShot;
-    private Transform bulletSpawn;
-    private GameObject gunShot;
-    private GameObject bullet;
+    [SerializeField] private Transform bulletSpawn;
+    [SerializeField] private GameObject gunShot;
+    [SerializeField] private GameObject bullet;
 
     // Interface Variablen:
     private float shotsPerSecond = 1;
@@ -44,7 +44,7 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
             endPoint = hits.point;                           // Der Endpunkt wird dort gesetzt wo etwas getroffen wurde.
         }
         ammunition--;                                       // Es wird 1 Munition verbraucht
-        photonView.RPC("showShot", RpcTarget.All,endPoint);
+        photonView.RPC("showShot", RpcTarget.All,new Vector3(endPoint.x,endPoint.y,0));
 
     }
     
@@ -57,6 +57,7 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
     // Interface Funktionen
     public void attack()
     {
+        Debug.Log("attack");
         if(Time.time - lastShot >= 1 / shotsPerSecond && ammunition > 0)
         {
             shoot();
@@ -65,6 +66,7 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
     }
     public void showShot(Vector3 endPoint)
     {
+        Debug.Log("ssssss");
         GameObject fire = Instantiate(gunShot, bulletSpawn.position, bulletSpawn.rotation);    
         fire.transform.localScale = transform.root.localScale;
         fire.transform.parent = transform;

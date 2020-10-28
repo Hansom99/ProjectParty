@@ -32,8 +32,8 @@ public class Aiming : MonoBehaviour
         
         
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90 ;
-        if (characterController.m_FacingRight) angle -= 10;
-        else angle += 10;
+        if (characterController.m_FacingRight) angle -= 0;
+        else angle += 0;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 }

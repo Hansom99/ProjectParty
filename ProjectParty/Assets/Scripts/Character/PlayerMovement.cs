@@ -131,6 +131,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	[PunRPC]
 	void showShot(Vector3 endpoint)
     {
+		Debug.Log("dshflkjudsa");
 		weapons[selectedWeapon].showShot(endpoint);
     }
     

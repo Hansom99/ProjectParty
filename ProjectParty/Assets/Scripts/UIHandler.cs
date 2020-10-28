@@ -23,8 +23,8 @@ public class UIHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        killCounter.text = networkManager.kills+" Kills \n" + networkManager.deaths + " Death";
-        ammoText.text = networkManager.Ammo+"";
-        healthSlider.value = networkManager.health/networkManager.maxHealth;
+        //killCounter.text = networkManager.kills+" Kills \n" + networkManager.deaths + " Death";
+        //ammoText.text = networkManager.Ammo+"";
+        //healthSlider.value = networkManager.health/networkManager.maxHealth;
     }
 }

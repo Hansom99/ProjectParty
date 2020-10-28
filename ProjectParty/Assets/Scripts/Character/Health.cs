@@ -9,7 +9,8 @@ public class Health : MonoBehaviourPunCallbacks
 {
     public float health;
     public float maxHealth = 100;
-    public HealthBar healthbar;
+    HealthBar healthbar;
+    public GameObject HealthbarPrefab;
 
     public GameObject blood;
 
@@ -21,6 +22,8 @@ public class Health : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+
+        healthbar = HealthbarPrefab.GetComponent<HealthBar>();
         health = maxHealth;
         healthbar.SetMaxHealth(maxHealth);
         healthbar.SetHealth(maxHealth);
