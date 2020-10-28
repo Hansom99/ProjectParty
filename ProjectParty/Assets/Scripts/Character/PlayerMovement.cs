@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	bool move = false;
 	public bool attack = false;
 
-	public int Ammo { get { return weapons[selectedWeapon].ammunition; } }
+	public int Ammo { get { return 0; } }
 
     private void Awake()
 	{
@@ -111,7 +111,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 	}
 	void selectWeapon()
     {
-		if (!weapons[selectedWeapon].isGun) arm.parent = armBone;
+		// if (!weapons[selectedWeapon].isGun) arm.parent = armBone;
     }
 	
 

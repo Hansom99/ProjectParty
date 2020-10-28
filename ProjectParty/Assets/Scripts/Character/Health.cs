@@ -9,6 +9,7 @@ public class Health : MonoBehaviourPunCallbacks
 {
     public float health;
     public float maxHealth = 100;
+    public HealthBar healthbar;
 
     public GameObject blood;
 
@@ -21,6 +22,8 @@ public class Health : MonoBehaviourPunCallbacks
     void Start()
     {
         health = maxHealth;
+        healthbar.SetMaxHealth(maxHealth);
+        healthbar.SetHealth(maxHealth);
     }
     
     public void takeDamage(float damage)
@@ -42,6 +45,7 @@ public class Health : MonoBehaviourPunCallbacks
     {
         
         this.health = health;
+        healthbar.SetHealth(this.health);
         
         Debug.Log("Health: "+health);
         if(thatblood == null)
