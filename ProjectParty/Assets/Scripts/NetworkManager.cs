@@ -21,11 +21,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
          
         
-        myPlayer =  PhotonNetwork.Instantiate("Player", new Vector3(PhotonNetwork.LocalPlayer.ActorNumber, 0,0), Quaternion.identity);
+        myPlayer =  PhotonNetwork.Instantiate(GlobalSettings.selectedCharacter, new Vector3(PhotonNetwork.LocalPlayer.ActorNumber, 0,0), Quaternion.identity);
         Health = myPlayer.GetComponent<Health>();
         playerMovement = myPlayer.GetComponent<PlayerMovement>();
         Health.deathEvent += Health_deathEvent;
