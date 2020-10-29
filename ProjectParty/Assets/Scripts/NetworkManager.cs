@@ -2,13 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public GameObject myPlayer;
 
+    int myPlayerID;
+
     Health Health;
     PlayerMovement playerMovement;
+
+    Timer respawnTimer;
+
+
+    public Transform[] respawnPoints;
 
 
     public float health { get { return myPlayer.GetComponent<Health>().health; } }
@@ -23,9 +31,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-         
         
-        myPlayer =  PhotonNetwork.Instantiate(GlobalSettings.selectedCharacter, new Vector3(PhotonNetwork.LocalPlayer.ActorNumber, 0,0), Quaternion.identity);
+        respawnTimer = gameObject.AddComponent<Timer>();
+        respawnTimer.timerStop += RespawnTimer_timerStop;
+        myPlayer =  PhotonNetwork.Instantiate(GlobalSettings.selectedCharacter, rndRespawnPoint(), Quaternion.identity);
+        myPlayerID = myPlayer.GetComponent<PhotonView>().ViewID;
         Health = myPlayer.GetComponent<Health>();
         playerMovement = myPlayer.GetComponent<PlayerMovement>();
         Health.deathEvent += Health_deathEvent;
@@ -37,6 +47,34 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         //PhotonNetwork.SendRate = 20;
     }
 
+    private void RespawnTimer_timerStop(object sender, System.EventArgs e)
+    {
+        myPlayer.SetActive(true);
+
+        photonView.RPC("respawn", RpcTarget.All, rndRespawnPoint(),myPlayerID);
+    }
+
+    [PunRPC]
+    void respawn(Vector3 newPos,int id)
+    {
+        Debug.Log(id);
+        GameObject player =  PhotonNetwork.GetPhotonView(id).gameObject;
+        player.SetActive(true);
+
+        player.transform.position = newPos;
+
+        player.GetComponent<Health>().respawn();
+
+    }
+
+
+    public void startRespawnTimer()
+    {
+        respawnTimer.timeRemaining = 3;
+        respawnTimer.start();
+    }
+
+
     private void Health_killEvent(object sender, System.EventArgs e)
     {
         kills++;
@@ -46,5 +84,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         deaths++;
     }
+
+    Vector3 rndRespawnPoint()
+    {
+        System.Random rnd = new System.Random();
+
+        int i = rnd.Next(0, respawnPoints.Length);
+        while(i >= respawnPoints.Length) i = rnd.Next(0, respawnPoints.Length);
+
+        return respawnPoints[i].position;
+    }
+
 }
  

@@ -9,12 +9,19 @@ public class Health : MonoBehaviourPunCallbacks
 {
     public float health;
     public float maxHealth = 100;
+    
+
+
     HealthBar healthbar;
     public GameObject HealthbarPrefab;
-
     public GameObject blood;
-
     GameObject thatblood;
+    Transform[] respawnPoints;
+
+    bool alive = true;
+
+    NetworkManager networkManager;
+
 
     public event EventHandler deathEvent;
     public event EventHandler killEvent;
@@ -22,6 +29,7 @@ public class Health : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        networkManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
 
         healthbar = HealthbarPrefab.GetComponent<HealthBar>();
         health = maxHealth;
@@ -31,6 +39,7 @@ public class Health : MonoBehaviourPunCallbacks
     
     public void takeDamage(float damage)
     {
+        if (!alive) return;
         health -= damage;
         Debug.Log("damage");
         photonView.RPC("updateHealth", RpcTarget.All, this.health);
@@ -57,27 +66,38 @@ public class Health : MonoBehaviourPunCallbacks
             Destroy(thatblood, 1f);
         }
         
-        if (photonView.IsMine && this.health < 0) death();
+        if (photonView.IsMine && this.health <= 0) death();
     }
 
     void death()
     {
-        photonView.RPC("updateDeath", RpcTarget.All, Vector3.zero);
+
+        photonView.RPC("updateDeath", RpcTarget.All);
         if (photonView.IsMine) deathEvent?.Invoke(this, EventArgs.Empty);
         else killEvent?.Invoke(this, EventArgs.Empty);
+    }
 
-    }
-    IEnumerator Wait()
-    {    
-        yield return new WaitForSeconds(2);
-        
-    }
-    [PunRPC]
-    void updateDeath(Vector3 respawnPoint)
+    public void respawn()
     {
-        transform.position = respawnPoint;
         health = maxHealth;
         healthbar.SetHealth(this.health);
-        Debug.Log("Died");
+        alive = true;
     }
+    [PunRPC]
+    void updateDeath()
+    {
+        alive = false;
+        Debug.Log("Died");
+        if (photonView.IsMine)
+        {
+            networkManager.startRespawnTimer();
+        }
+        gameObject.SetActive(false);
+
+    }
+
+
+
+
+
 }
