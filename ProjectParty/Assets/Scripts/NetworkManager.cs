@@ -36,6 +36,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         respawnTimer.timerStop += RespawnTimer_timerStop;
         myPlayer =  PhotonNetwork.Instantiate(GlobalSettings.selectedCharacter, rndRespawnPoint(), Quaternion.identity);
         myPlayerID = myPlayer.GetComponent<PhotonView>().ViewID;
+        myPlayer.GetComponent<SkinHandler>().setCharacter(PhotonNetwork.LocalPlayer.ActorNumber-1);
         Health = myPlayer.GetComponent<Health>();
         playerMovement = myPlayer.GetComponent<PlayerMovement>();
         Health.deathEvent += Health_deathEvent;

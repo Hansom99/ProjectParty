@@ -18,6 +18,7 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
     [SerializeField] private Transform bulletSpawn;
     [SerializeField] private GameObject gunShot;
     [SerializeField] private GameObject bullet;
+    public Transform target;
 
     // Interface Variablen:
     private float shotsPerSecond = 1;
@@ -29,10 +30,11 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
     // Funktionen
     public void shoot()
     {
-        RaycastHit2D hits = Physics2D.Raycast(bulletSpawn.position, transform.root.localScale.x*bulletSpawn.right, maxShootDistance);       // Raycast von der Waffe aus
-        Debug.DrawLine(bulletSpawn.position, bulletSpawn.position+ transform.root.localScale.x * bulletSpawn.right*maxShootDistance,Color.red);
+        RaycastHit2D hits = Physics2D.Raycast(bulletSpawn.position,-bulletSpawn.position+target.position, maxShootDistance);       // Raycast von der Waffe aus
+        
 
-        Vector2 endPoint = transform.root.localScale.x * bulletSpawn.right * maxShootDistance; // Punkt bis zu dem hits geht.
+        Vector2 endPoint = target.position; // Punkt bis zu dem hits geht.
+        Debug.DrawLine(bulletSpawn.position, endPoint, Color.red, 1f);
 
         if (hits.collider != null)
         {
@@ -74,8 +76,8 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
         GameObject shot = Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
         shot.transform.localScale = transform.root.localScale;
         Vector3 speed = Vector3.zero;
-        shot.GetComponent<Rigidbody2D>().velocity = ((endPoint).normalized * bulletForce);
-        Destroy(shot, (endPoint).magnitude/bulletForce);
+        shot.GetComponent<Rigidbody2D>().velocity = ((target.position-bulletSpawn.position).normalized * bulletForce);
+        Destroy(shot, (endPoint - bulletSpawn.position).magnitude/bulletForce);
 
     }
 

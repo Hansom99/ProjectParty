@@ -11,8 +11,7 @@ public class CharacterController2D : MonoBehaviourPunCallback
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
 	[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
-	[SerializeField] private Transform target;
-	[SerializeField] private Transform characterPrefab;
+	[SerializeField] public Transform target;
 
 
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
@@ -26,7 +25,6 @@ public class CharacterController2D : MonoBehaviourPunCallback
 
 	private void Awake()
 	{
-		target = characterPrefab.Find("Target").transform;
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 	}
 
