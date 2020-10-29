@@ -12,19 +12,21 @@ public class CharacterController2D : MonoBehaviourPunCallback
 	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
 	[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
 	[SerializeField] private Transform target;
+	[SerializeField] private Transform characterPrefab;
+
 
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
 	private Rigidbody2D m_Rigidbody2D;
 	private Vector3 velocity = Vector3.zero;
-    private Vector3 networkPosition;
-    private float networkRotation;
+    
 
 	public bool m_FacingRight = true;  // For determining which way the player is currently facing.
 
 	private void Awake()
 	{
+		target = characterPrefab.Find("Target").transform;
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 	}
 
