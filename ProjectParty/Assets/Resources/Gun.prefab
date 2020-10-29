@@ -96,12 +96,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059a6e95de709bd41911054285cdf3e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpawn: {fileID: 7698237166138360939}
+  maxAmmunition: 3
   maxShootDistance: 20
   bulletForce: 100
+  damage: 25
+  bulletSpawn: {fileID: 7698237166138360939}
   gunShot: {fileID: 4272632788083389733, guid: 49e94399c2de5a14880d7e930e246d9a, type: 3}
   bullet: {fileID: 741757702859388788, guid: a59c1b539540ba246b59a967a06f2aaa, type: 3}
-  damage: 25
 --- !u!1 &5264101876877495557
 GameObject:
   m_ObjectHideFlags: 0
