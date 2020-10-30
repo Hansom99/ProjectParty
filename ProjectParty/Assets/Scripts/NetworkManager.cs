@@ -26,6 +26,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public int kills = 0;
     public int deaths = 0;
 
+
+    public int skin = 3;
+
     
 
     // Start is called before the first frame update
@@ -36,7 +39,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         respawnTimer.timerStop += RespawnTimer_timerStop;
         myPlayer =  PhotonNetwork.Instantiate(GlobalSettings.selectedCharacter, rndRespawnPoint(), Quaternion.identity);
         myPlayerID = myPlayer.GetComponent<PhotonView>().ViewID;
-        myPlayer.GetComponent<SkinHandler>().setCharacter(PhotonNetwork.LocalPlayer.ActorNumber + 2);
+        myPlayer.GetComponent<SkinHandler>().setCharacter(skin);
         Health = myPlayer.GetComponent<Health>();
         playerMovement = myPlayer.GetComponent<PlayerMovement>();
         Health.deathEvent += Health_deathEvent;

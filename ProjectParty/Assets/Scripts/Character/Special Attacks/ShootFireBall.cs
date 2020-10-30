@@ -56,7 +56,7 @@ public class ShootFireBall : MonoBehaviourPunCallbacks, SpecialAttack
     // Update is called once per frame
     void Update()
     {
-
+        if (!photonView.IsMine) return;
         if (isReady)
         {
             if (Input.GetKeyDown("g"))
