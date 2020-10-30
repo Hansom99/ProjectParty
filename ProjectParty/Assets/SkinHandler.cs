@@ -7,6 +7,7 @@ public class SkinHandler : MonoBehaviourPunCallbacks
 {
     GameObject skin;
     CharacterPrefabHandler cph;
+    PhotonAnimatorView animatorView;
 
     public Transform skinPlace;
     public GameObject[] allCharacterPrefabs;
@@ -28,6 +29,10 @@ public class SkinHandler : MonoBehaviourPunCallbacks
         skin.transform.parent = skinPlace.transform;
         skin.transform.localPosition = Vector3.zero;
         cph = skin.GetComponent<CharacterPrefabHandler>();
+
+        animatorView = skin.AddComponent<PhotonAnimatorView>();
+        animatorView.SetParameterSynchronized("Walking", PhotonAnimatorView.ParameterType.Bool, PhotonAnimatorView.SynchronizeType.Discrete);
+        
 
         GetComponent<CharacterController2D>().target = cph.Target.transform;
         GetComponent<PlayerMovement>().shape = skin;
