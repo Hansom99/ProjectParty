@@ -45,7 +45,7 @@ public class Health : MonoBehaviourPunCallbacks
         health -= damage;
         this.lastHitTime = Time.time;
         Debug.Log("damage");
-        photonView.RPC("updateHealth", RpcTarget.All, this.health, this.lastHitTime, true);
+        photonView.RPC("updateHealth", RpcTarget.All, this.health, true);
         
 
     }
@@ -59,7 +59,7 @@ public class Health : MonoBehaviourPunCallbacks
                 return;
             }
             this.health += health;
-            photonView.RPC("updateHealth", RpcTarget.All, this.health, this.lastHitTime, false);
+            photonView.RPC("updateHealth", RpcTarget.All, this.health, false);
 
         }
         
@@ -72,18 +72,18 @@ public class Health : MonoBehaviourPunCallbacks
             return;
         }
         float noDamageTime = Time.time - this.lastHitTime;
-        if (noDamageTime > 3f && this.health < maxHealth)
+        if (noDamageTime > 5f && this.health < maxHealth)
         {
-            heal(10*Time.fixedDeltaTime);
+            heal(5*Time.fixedDeltaTime);
         }
     }
 
     [PunRPC]
-    void updateHealth(float health, float lastHitTime, bool takeDamage)
+    void updateHealth(float health, bool takeDamage)
     {
         
         this.health = health;
-        this.lastHitTime = lastHitTime;
+        if(takeDamage) this.lastHitTime = Time.time;
         healthbar.SetHealth(this.health);
         
         Debug.Log("Health: "+health);
