@@ -9,7 +9,9 @@ public class Health : MonoBehaviourPunCallbacks
 {
     public float health;
     public float maxHealth = 100;
-    
+
+    public float lastHitTime;
+
 
 
     HealthBar healthbar;
@@ -41,26 +43,51 @@ public class Health : MonoBehaviourPunCallbacks
     {
         if (!alive) return;
         health -= damage;
+        this.lastHitTime = Time.time;
         Debug.Log("damage");
-        photonView.RPC("updateHealth", RpcTarget.All, this.health);
+        photonView.RPC("updateHealth", RpcTarget.All, this.health, this.lastHitTime, true);
         
 
     }
     public void heal(float health)
     {
-        this.health += health;
-        photonView.RPC("updateHealth", RpcTarget.All, this.health);
+        if(this.health < maxHealth)
+        {
+            if((this.health + health) > maxHealth) //falls schon fast bei maxhealth setze health auf max
+            {
+                this.health = maxHealth;
+                return;
+            }
+            this.health += health;
+            photonView.RPC("updateHealth", RpcTarget.All, this.health, this.lastHitTime, false);
+
+        }
+        
+    }
+
+    private void FixedUpdate() //healen nach bestimmter zeit ohne schaden
+    {
+        if(!photonView.IsMine)
+        {
+            return;
+        }
+        float noDamageTime = Time.time - this.lastHitTime;
+        if (noDamageTime > 3f && this.health < maxHealth)
+        {
+            heal(10*Time.fixedDeltaTime);
+        }
     }
 
     [PunRPC]
-    void updateHealth(float health)
+    void updateHealth(float health, float lastHitTime, bool takeDamage)
     {
         
         this.health = health;
+        this.lastHitTime = lastHitTime;
         healthbar.SetHealth(this.health);
         
         Debug.Log("Health: "+health);
-        if(thatblood == null)
+        if(thatblood == null && takeDamage)
         {
             thatblood = Instantiate(blood, transform.position+transform.up*2, transform.rotation);
             Destroy(thatblood, 1f);
