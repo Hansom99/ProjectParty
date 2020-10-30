@@ -27,7 +27,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public int deaths = 0;
 
 
-    public int skin = 3;
+    public int skin = 2;
 
     
 

@@ -1,9 +1,11 @@
-﻿using Photon.Pun;
+﻿using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundPunsh : MonoBehaviourPunCallbacks, SpecialAttack
+public class GroundPunsh : MonoBehaviourPunCallbacks, SpecialAttack , IOnEventCallback
 {
     Animator animator;
     private float energy = 0;
@@ -26,7 +28,7 @@ public class GroundPunsh : MonoBehaviourPunCallbacks, SpecialAttack
         isReady = false;
         energy = 0;
         int hashIdle = animator.GetCurrentAnimatorStateInfo(0).fullPathHash; 
-        animator.SetTrigger("SpecialAttack");
+       // animator.SetTrigger("SpecialAttack");
         yield return new WaitForSeconds(0.8f);
         PhotonNetwork.Instantiate("DustInAir", hitPoint.position, hitPoint.rotation);
         RaycastHit2D[] hits= Physics2D.BoxCastAll(hitPoint.position, new Vector2(4, 1), 0, hitPoint.right);
@@ -61,7 +63,7 @@ public class GroundPunsh : MonoBehaviourPunCallbacks, SpecialAttack
         {
             if (Input.GetKeyDown("g"))
             {
-                
+                PhotonNetwork.RaiseEvent(2, new object[] { photonView.ViewID }, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
                 coroutine = use();
                 StartCoroutine(coroutine);
             }
@@ -77,6 +79,15 @@ public class GroundPunsh : MonoBehaviourPunCallbacks, SpecialAttack
         Debug.Log(energy);
     }
 
+    public void OnEvent(EventData photonEvent)
+    {
+        byte eventCode = photonEvent.Code;
 
+        if (eventCode == 2 && photonView.ViewID == (int)(((object[])photonEvent.CustomData)[0]))
+        {
+
+            animator.SetTrigger("SpecialAttack");
+        }
+    }
 
 }
