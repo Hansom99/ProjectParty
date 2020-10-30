@@ -119,7 +119,7 @@ MonoBehaviour:
   m_SynchronizeVelocity: 1
   m_SynchronizeAngularVelocity: 0
   m_TeleportEnabled: 1
-  m_TeleportIfDistanceGreaterThan: 15
+  m_TeleportIfDistanceGreaterThan: 4
 --- !u!114 &903278486955646729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +224,7 @@ MonoBehaviour:
   - {fileID: 484563618896394861, guid: 29bd78f37aa681b4d901d13597eab981, type: 3}
   - {fileID: 4224260041446953184, guid: e070c3f3947b72544bade1fd232c58d4, type: 3}
   - {fileID: 4733252726944763441, guid: be41557826f189e4783a502fabc3f432, type: 3}
+  - {fileID: 835886177981072530, guid: b97fe3bfa6bd2e64a899f2cbb1761b23, type: 3}
 --- !u!1 &940413228785735768
 GameObject:
   m_ObjectHideFlags: 0

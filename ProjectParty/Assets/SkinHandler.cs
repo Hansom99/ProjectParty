@@ -25,8 +25,8 @@ public class SkinHandler : MonoBehaviourPunCallbacks
     void addSkin(int i)
     {
         skin = Instantiate(allCharacterPrefabs[i]);
-        skin.transform.parent = transform;
-        skin.transform.position = skinPlace.position;
+        skin.transform.parent = skinPlace.transform;
+        skin.transform.localPosition = Vector3.zero;
         cph = skin.GetComponent<CharacterPrefabHandler>();
 
         GetComponent<CharacterController2D>().target = cph.Target.transform;
