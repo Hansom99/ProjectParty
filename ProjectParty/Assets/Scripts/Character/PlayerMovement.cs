@@ -19,13 +19,15 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 	public float runSpeed = 40f;
 
+	float verticalMove = 0f;
 	float horizontalMove = 0f;
 	bool jump = false;
 	bool crouch = false;
-	bool move = false;
+	bool climb = false;
 	public bool attack = false;
+    private float climbSpeed = 50f;
 
-	public int Ammo { get { return 0; } }
+    public int Ammo { get { return 0; } }
 
     private void Awake()
 	{
@@ -48,6 +50,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		if (!photonView.IsMine) return;
 
 		horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+		verticalMove = Input.GetAxisRaw("Vertical") * climbSpeed;
 
 		if (Input.GetButtonDown("Jump"))
 		{
@@ -95,6 +98,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 		//Send to other Clients new Position
 		//photonView.RPC("updatePosition", RpcTarget.Others, transform.position, horizontalMove * Time.fixedDeltaTime,crouch,jump);
 		controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
+		controller.Climb(verticalMove);
 
 		jump = false;
 
@@ -113,12 +117,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
 		// if (!weapons[selectedWeapon].isGun) arm.parent = armBone;
     }
-	
 
 
 
 
-	[PunRPC]
+
+    [PunRPC]
 	void updatePosition(Vector3 pos,float move,bool crouch,bool jump)
 	{
 		transform.position = pos;
