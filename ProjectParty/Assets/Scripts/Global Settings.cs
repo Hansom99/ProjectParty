@@ -8,5 +8,5 @@ public static class GlobalSettings
 
 
 
-
+    public static bool objectCanBeTaken = false;
 }
