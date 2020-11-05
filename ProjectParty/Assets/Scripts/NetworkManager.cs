@@ -34,10 +34,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        
+        myPlayer = PhotonNetwork.Instantiate(GlobalSettings.selectedCharacter, rndRespawnPoint(), Quaternion.identity);
         respawnTimer = gameObject.AddComponent<Timer>();
         respawnTimer.timerStop += RespawnTimer_timerStop;
-        myPlayer =  PhotonNetwork.Instantiate(GlobalSettings.selectedCharacter, rndRespawnPoint(), Quaternion.identity);
+        
         myPlayerID = myPlayer.GetComponent<PhotonView>().ViewID;
         myPlayer.GetComponent<SkinHandler>().setCharacter(skin);
         Health = myPlayer.GetComponent<Health>();

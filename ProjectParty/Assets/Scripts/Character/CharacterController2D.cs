@@ -23,8 +23,9 @@ public class CharacterController2D : MonoBehaviourPunCallback
     
 
 	public bool m_FacingRight = true;  // For determining which way the player is currently facing.
+    private bool climb;
 
-	private void Awake()
+    private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		
@@ -53,7 +54,21 @@ public class CharacterController2D : MonoBehaviourPunCallback
 		else animator.SetBool("Walking", false);
 	}
 
+	public void Climb(float moveUp)
+    {
+		if (!climb) return;
 
+		Vector2 force = transform.up * (m_Rigidbody2D.mass*9.81f*0.8f);
+
+		m_Rigidbody2D.AddForce(force);
+
+		// Move the character by finding the target velocity
+		Vector3 targetVelocity = new Vector2(m_Rigidbody2D.velocity.x,moveUp);
+		// And then smoothing it out and applying it to the character
+		m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
+
+
+	}
 
 	public void Move(float move, bool crouch, bool jump)
 	{
@@ -140,22 +155,38 @@ public class CharacterController2D : MonoBehaviourPunCallback
 		transform.localScale = theScale;
 	}
 
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.IsWriting)
-    //    {
-    //        stream.SendNext(m_Rigidbody2D.position);
-    //        stream.SendNext(m_Rigidbody2D.rotation);
-    //        stream.SendNext(m_Rigidbody2D.velocity);
-    //    }
-    //    else
-    //    {
-    //        networkPosition = (Vector3)stream.ReceiveNext();
-    //        networkRotation = (float)stream.ReceiveNext();
-    //        m_Rigidbody2D.velocity = (Vector3)stream.ReceiveNext();
 
-    //        float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
-    //        networkPosition += (Vector3)(m_Rigidbody2D.velocity * lag);
-    //    }
-    //}
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.gameObject.tag == "Ladder")
+		{
+			
+			climb = true;
+		}
+	}
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision.gameObject.tag == "Ladder") climb = false;
+	}
+
+
+
+	//public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	//{
+	//    if (stream.IsWriting)
+	//    {
+	//        stream.SendNext(m_Rigidbody2D.position);
+	//        stream.SendNext(m_Rigidbody2D.rotation);
+	//        stream.SendNext(m_Rigidbody2D.velocity);
+	//    }
+	//    else
+	//    {
+	//        networkPosition = (Vector3)stream.ReceiveNext();
+	//        networkRotation = (float)stream.ReceiveNext();
+	//        m_Rigidbody2D.velocity = (Vector3)stream.ReceiveNext();
+
+	//        float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
+	//        networkPosition += (Vector3)(m_Rigidbody2D.velocity * lag);
+	//    }
+	//}
 }

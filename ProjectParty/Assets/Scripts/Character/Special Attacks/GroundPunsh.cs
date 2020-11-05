@@ -77,7 +77,7 @@ public class GroundPunsh : MonoBehaviourPunCallbacks, SpecialAttack , IOnEventCa
 
         }
         else isReady = true;
-        Debug.Log(energy);
+      //  Debug.Log(energy);
     }
 
     public void OnEvent(EventData photonEvent)

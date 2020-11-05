@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ladder
+  - Flag
+  - TeamBase
   layers:
   - Default
   - TransparentFX
@@ -14,8 +17,8 @@ TagManager:
   - 
   - 
   - Player
-  - 
-  - 
+  - TeamA
+  - TeamB
   - 
   - 
   - 
@@ -40,6 +43,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: MapFront
+    uniqueID: 2443569695
     locked: 0
   - name: Player
     uniqueID: 543644505

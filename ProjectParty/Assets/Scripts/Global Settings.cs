@@ -12,5 +12,5 @@ public static class GlobalSettings
     public static int ammunition = 0;
 
 
-
+    public static bool objectCanBeTaken = false;
 }
