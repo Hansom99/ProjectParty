@@ -79,6 +79,7 @@ public class ShootFireBall : MonoBehaviourPunCallbacks, SpecialAttack , IOnEvent
         if (energy < 100)
         {
             energy += Time.deltaTime * loadingSpeed;
+            GlobalSettings.specialAttackEnergy = energy;
 
         }
         else isReady = true;

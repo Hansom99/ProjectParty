@@ -16,7 +16,7 @@ public class GroundPunsh : MonoBehaviourPunCallbacks, SpecialAttack , IOnEventCa
     private IEnumerator coroutine;
 
     [SerializeField] Transform hitPoint;
-    private float damage = 80;
+    private float damage = 40;
 
     public float Energy { get { return energy; } }
 
@@ -31,7 +31,7 @@ public class GroundPunsh : MonoBehaviourPunCallbacks, SpecialAttack , IOnEventCa
        // animator.SetTrigger("SpecialAttack");
         yield return new WaitForSeconds(0.8f);
         PhotonNetwork.Instantiate("DustInAir", hitPoint.position, hitPoint.rotation);
-        RaycastHit2D[] hits= Physics2D.BoxCastAll(hitPoint.position, new Vector2(4, 1), 0, hitPoint.right);
+        RaycastHit2D[] hits= Physics2D.BoxCastAll(hitPoint.position, new Vector2(20, 5), 0, hitPoint.right);
 
         foreach(RaycastHit2D hit in hits)
         {
@@ -73,6 +73,7 @@ public class GroundPunsh : MonoBehaviourPunCallbacks, SpecialAttack , IOnEventCa
         if (energy < 100)
         {
             energy += Time.deltaTime * loadingSpeed;
+            GlobalSettings.specialAttackEnergy = energy;
 
         }
         else isReady = true;

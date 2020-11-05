@@ -750,6 +750,7 @@ MonoBehaviour:
   - {fileID: 1143512757}
   kills: 0
   deaths: 0
+  skin: 2
 --- !u!4 &301437558
 Transform:
   m_ObjectHideFlags: 0

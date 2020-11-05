@@ -84,8 +84,9 @@ public class Health : MonoBehaviourPunCallbacks
         
         this.health = health;
         if(takeDamage) this.lastHitTime = Time.time;
+
+
         healthbar.SetHealth(this.health);
-        
         Debug.Log("Health: "+health);
         if(thatblood == null && takeDamage)
         {

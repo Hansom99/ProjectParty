@@ -18,7 +18,8 @@ public class CharacterController2D : MonoBehaviourPunCallback
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
 	private Rigidbody2D m_Rigidbody2D;
-	private Vector3 velocity = Vector3.zero;
+    private Animator animator;
+    private Vector3 velocity = Vector3.zero;
     
 
 	public bool m_FacingRight = true;  // For determining which way the player is currently facing.
@@ -26,10 +27,14 @@ public class CharacterController2D : MonoBehaviourPunCallback
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+		
+	}
+    private void Start()
+    {
+		animator = target.parent.GetComponent<Animator>();
 	}
 
-
-	private void FixedUpdate()
+    private void FixedUpdate()
 	{
 		if (photonView.IsMine)
 		{
@@ -44,11 +49,8 @@ public class CharacterController2D : MonoBehaviourPunCallback
 					m_Grounded = true;
 			}
 		}
-  //      else
-  //      {
-		//	m_Rigidbody2D.position = Vector3.MoveTowards(m_Rigidbody2D.position, networkPosition, Time.fixedDeltaTime);
-		//	m_Rigidbody2D.rotation += (m_Rigidbody2D.rotation - networkRotation) * Time.fixedDeltaTime * 100.0f;
-		//}
+		if (Mathf.Abs(m_Rigidbody2D.velocity.x) >= 1) animator.SetBool("Walking", true);
+		else animator.SetBool("Walking", false);
 	}
 
 

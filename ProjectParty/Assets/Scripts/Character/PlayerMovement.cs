@@ -41,6 +41,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
 		animator = shape.GetComponent<Animator>();
     }
+	
 
     // Update is called once per frame
     void Update () {
@@ -100,8 +101,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 
 		//animator.SetBool("jump", jump);
-		if (horizontalMove != 0 && !attack) animator.SetBool("Walking",true);
-		else animator.SetBool("Walking", false);
+		
 
 		if (attack) weapons[selectedWeapon].attack();
 		//animator.SetBool("Attack", attack);
@@ -113,20 +113,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
 		// if (!weapons[selectedWeapon].isGun) arm.parent = armBone;
     }
-	
-
-
-
-
-	[PunRPC]
-	void updatePosition(Vector3 pos,float move,bool crouch,bool jump)
-	{
-		transform.position = pos;
-		//this.move = true;
-		
-		
-		controller.Move(move, crouch, jump);
-	}
 
 	[PunRPC]
 	void showShot(Vector3 endpoint)

@@ -46,6 +46,7 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
             endPoint = hits.point;                           // Der Endpunkt wird dort gesetzt wo etwas getroffen wurde.
         }
         ammunition--;                                       // Es wird 1 Munition verbraucht
+        GlobalSettings.ammunition = ammunition;
         photonView.RPC("showShot", RpcTarget.All,new Vector3(endPoint.x,endPoint.y,0));
 
     }
@@ -54,6 +55,7 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
     {
         ammunition = maxAmmunition;
         lastShot = Time.time;
+        GlobalSettings.ammunition = ammunition;
     }
 
     // Interface Funktionen
@@ -85,5 +87,6 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
     {
         ammunition = maxAmmunition;               // Munition ist wieder voll
         lastShot = Time.time;                       // Man muss wieder kurz warten bis man schiessen kann.
+        GlobalSettings.ammunition = ammunition;
     }
 }
