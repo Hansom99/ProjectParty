@@ -23,6 +23,12 @@ public class UIHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Mathf.Sign(transform.root.localScale.x) != Mathf.Sign(transform.localScale.x))
+        {
+            Vector3 orientationFix = transform.localScale;
+            orientationFix.x *= -1;
+            transform.localScale = orientationFix;
+        }
         //killCounter.text = networkManager.kills+" Kills \n" + networkManager.deaths + " Death";
         //ammoText.text = networkManager.Ammo+"";
         //healthSlider.value = networkManager.health/networkManager.maxHealth;
