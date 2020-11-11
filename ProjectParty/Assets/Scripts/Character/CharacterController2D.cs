@@ -58,12 +58,12 @@ public class CharacterController2D : MonoBehaviourPunCallback
     {
 		if (!climb) return;
 
-		Vector2 force = transform.up * (m_Rigidbody2D.mass*9.81f*0.8f);
+		Vector2 force = transform.up * (m_Rigidbody2D.mass*9.81f);
 
 		m_Rigidbody2D.AddForce(force);
 
 		// Move the character by finding the target velocity
-		Vector3 targetVelocity = new Vector2(m_Rigidbody2D.velocity.x,moveUp);
+		Vector3 targetVelocity = new Vector2(m_Rigidbody2D.velocity.x,moveUp*10f);
 		// And then smoothing it out and applying it to the character
 		m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
 

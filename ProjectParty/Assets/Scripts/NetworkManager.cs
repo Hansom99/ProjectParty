@@ -10,7 +10,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     int myPlayerID;
 
-    Health Health;
+    public Health Health;
     PlayerMovement playerMovement;
 
     Timer respawnTimer;

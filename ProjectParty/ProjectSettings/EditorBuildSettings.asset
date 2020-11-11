@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Towerdefens Maps/FirstTower.unity
     guid: a353205e4dc5e1547aa6872b85bd82f6
+  - enabled: 1
+    path: Assets/Scenes/DeathMatch/HillMap.unity
+    guid: 7182ece8616f29046ae455baa336d455
   m_configObjects: {}

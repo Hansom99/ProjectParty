@@ -142,6 +142,7 @@ MonoBehaviour:
   - {fileID: 8741829796154035779}
   selectedWeapon: 0
   runSpeed: 100
+  climbSpeed: 10
   attack: 0
 --- !u!114 &7511121411033102621
 MonoBehaviour:
