@@ -1,6 +1,7 @@
 ﻿using System;
 using Unity;
-
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public static class GlobalSettings
 {
@@ -19,4 +20,6 @@ public static class GlobalSettings
     //NETZWERKVARIABLEN (SYNKRONISIERT)
     public static int PointsTeamA = 0;
     public static int PointsTeamB = 0;
+
+
 }

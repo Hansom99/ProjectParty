@@ -8,7 +8,17 @@ public class AmmoBar : MonoBehaviour
     public Slider slider;
     public Image fill;
     public Gradient gradient;
-    AmountOfAmmoText text;
+    public Text text;
+
+    private void Start()
+    {
+        SetMaxAmmo(GlobalSettings.ammunition);
+    }
+
+    private void FixedUpdate()
+    {
+        SetAmmo(GlobalSettings.ammunition);
+    }
 
     public void SetMaxAmmo(int ammo)
     {
@@ -16,13 +26,13 @@ public class AmmoBar : MonoBehaviour
         slider.value = ammo;
 
         fill.color = gradient.Evaluate(1f);
-        text.SetAmmo(ammo);
+        text.text = "X"+ammo.ToString();
     }
 
     public void SetAmmo(int ammo)
     {
         slider.value = ammo;
         fill.color = gradient.Evaluate(slider.normalizedValue);
-        text.SetAmmo(ammo);
+        text.text = "X" + ammo.ToString();
     }
 }
