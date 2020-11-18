@@ -64,6 +64,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.Log(id);
         GameObject player =  PhotonNetwork.GetPhotonView(id).gameObject;
         player.SetActive(true);
+        if (skin != GlobalSettings.skin)
+        {
+            skin = GlobalSettings.skin;
+            myPlayer.GetComponent<SkinHandler>().setCharacter(skin);
+        }
 
         player.transform.position = newPos;
 
