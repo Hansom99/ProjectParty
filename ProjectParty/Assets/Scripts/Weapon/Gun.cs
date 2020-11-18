@@ -18,6 +18,7 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
     [SerializeField] private GameObject gunShot;
     [SerializeField] private GameObject bullet;
     public Transform target;
+    Camera camera;
 
     // Interface Variablen:
     private float shotsPerSecond = 2;
@@ -29,10 +30,11 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
     // Funktionen
     public void shoot()
     {
-        RaycastHit2D hits = Physics2D.Raycast(bulletSpawn.position,-bulletSpawn.position+target.position, maxShootDistance);       // Raycast von der Waffe aus
+        Vector3 target = camera.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hits = Physics2D.Raycast(bulletSpawn.position,-bulletSpawn.position+target, maxShootDistance);       // Raycast von der Waffe aus
         
 
-        Vector2 endPoint = target.position; // Punkt bis zu dem hits geht.
+        Vector2 endPoint = target; // Punkt bis zu dem hits geht.
         Debug.DrawLine(bulletSpawn.position, endPoint, Color.red, 1f);
 
         if (hits.collider != null)
@@ -57,6 +59,12 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
         GlobalSettings.ammunition = ammunition;
     }
 
+    void Start()
+    {
+        camera = Camera.main;
+    }
+
+
     // Interface Funktionen
     public void attack()
     {
@@ -77,7 +85,8 @@ public class Gun : MonoBehaviourPunCallbacks, Weapon
         GameObject shot = Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
         shot.transform.localScale = transform.root.localScale;
         Vector3 speed = Vector3.zero;
-        shot.GetComponent<Rigidbody2D>().velocity = ((target.position-bulletSpawn.position).normalized * bulletForce);
+        Vector3 target = camera.ScreenToWorldPoint(Input.mousePosition);
+        shot.GetComponent<Rigidbody2D>().velocity = ((target-bulletSpawn.position).normalized * bulletForce);
         Destroy(shot, (endPoint - bulletSpawn.position).magnitude/bulletForce);
 
     }

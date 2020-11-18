@@ -8,8 +8,8 @@ public class Boomerang : MonoBehaviourPunCallbacks, Weapon
     // Boomerang Variablen
 
     public float maxShootDistance = 30f;
-    public float force = 1000f;
     public float damage = 100f;
+    public float boomerangSpeed = 50f;
     private bool inHand = true;
     [SerializeField] private GameObject flyingBoomerang;
     /// <summary>
@@ -20,7 +20,12 @@ public class Boomerang : MonoBehaviourPunCallbacks, Weapon
     /// Speicher Zeit des letzten Schusses.
     /// </summary>
     private float lastShot;
+    /// <summary>
+    /// Rigidbody of the boomerang
+    /// </summary>
+    private Rigidbody2D rb;
 
+    Camera camera;
 
     // Interface Variablen
 
@@ -32,9 +37,30 @@ public class Boomerang : MonoBehaviourPunCallbacks, Weapon
 
     // Funktionen
 
+    void Start()
+    {
+        camera = Camera.main; 
+        rb = GetComponent<Rigidbody2D>();  // Setzt rb zum rigidbody des Boomerangs
+    }
+
+    void shoot()
+    {
+        inHand = false;
+        Vector3 target = camera.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 force = target - transform.position;  // Vector von player zu mouseposition.
+        Vector3.Normalize(force);  // Force hat Länge 1
+        rb.AddForce(force);
+    }
+
+
+    // Interface Funktionen
+
     public void attack()
     {
-        throw new System.NotImplementedException();
+        if (inHand)
+        { 
+            shoot();       
+        }
     }
 
     public void reload()
