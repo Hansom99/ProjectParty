@@ -23,23 +23,20 @@ public class Aiming : MonoBehaviourPunCallbacks
         if (!photonView.IsMine) return;
         camera = Camera.main;
         characterController = transform.root.GetComponent<CharacterController2D>();
-        aimLine = GetComponent<LineRenderer>();
+        //aimLine = GetComponent<LineRenderer>();
         
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (!isAiming || !photonView.IsMine) return;
-
-
-        
         target.position = camera.ScreenToWorldPoint(Input.mousePosition);
-        
         var pos = camera.WorldToScreenPoint(transform.position);
         var dir = Input.mousePosition - pos;
-        aimLine.SetPosition(0, new Vector3(transform.position.x, transform.position.y));
-        aimLine.SetPosition(1, new Vector3(target.position.x,target.position.y));
+        //aimLine.SetPosition(0, new Vector3(transform.position.x, transform.position.y));
+        //aimLine.SetPosition(1, new Vector3(target.position.x,target.position.y));
 
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         if (!characterController.m_FacingRight) angle += 180;

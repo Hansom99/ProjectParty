@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update () {
 
-		if (!photonView.IsMine) return;
+		if (!photonView.IsMine || GlobalSettings.inMenue) return;
 
 		horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 		verticalMove = Input.GetAxisRaw("Vertical") * climbSpeed *10 ;

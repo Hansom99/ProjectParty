@@ -21,7 +21,10 @@ public class SkinHandler : MonoBehaviourPunCallbacks
         photonView.RPC("addSkin", RpcTarget.All, i);
 
     }
-
+    /// <summary>
+    /// Ladet den Charakter aus dem Array allCharacterPrefabs und platziert in richtig und fügt die Waffen zum Charakter sodass sie richtig verhalten (drehen)
+    /// </summary>
+    /// <param name="i"></param>
     [PunRPC]
     void addSkin(int i)
     {
@@ -30,6 +33,8 @@ public class SkinHandler : MonoBehaviourPunCallbacks
         skin = Instantiate(allCharacterPrefabs[i]);
         skin.transform.parent = skinPlace.transform;
         skin.transform.localPosition = Vector3.zero;
+        if (isSet) skin.transform.localScale = oldSkin.transform.localScale;
+        if (i > 2) skin.transform.localScale = skin.transform.localScale * 1.5f; //wenn i>2 dann sind es Wraiths und die müssen etwas grösser sein (just for good looking)
         cph = skin.GetComponent<CharacterPrefabHandler>();
 
         animatorView = skin.AddComponent<PhotonAnimatorView>();
@@ -42,12 +47,13 @@ public class SkinHandler : MonoBehaviourPunCallbacks
         foreach(GameObject w in GetComponent<PlayerMovement>().weaponPrefabs)
         {
             w.transform.parent = cph.Hand.transform;
-            w.transform.position = cph.Hand.transform.position + new Vector3(0.9f,0, 0);
-            
+            w.transform.position = cph.Hand.transform.position;
+            w.transform.rotation = Quaternion.Euler(0, 0, 0);
             Gun g = w.GetComponent<Gun>();
             if (g != null)
             {
                 w.transform.rotation = Quaternion.Euler(0, 0, -13);
+                w.transform.position +=  new Vector3(0.9f, 0, 0);
                 g.target = cph.Target.transform;
             }
 

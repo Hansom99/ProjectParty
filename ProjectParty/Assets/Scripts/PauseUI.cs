@@ -22,6 +22,7 @@ public class PauseUI : MonoBehaviour
                 menue.SetActive(true);
                 inGameUI.SetActive(false);
                 isActive = true;
+                GlobalSettings.inMenue = true;
             }
             else
             {
@@ -37,6 +38,7 @@ public class PauseUI : MonoBehaviour
         selectUI.SetActive(false);
         inGameUI.SetActive(true);
         isActive = false;
+        GlobalSettings.inMenue = false;
     }
     public void goToSelect()
     {

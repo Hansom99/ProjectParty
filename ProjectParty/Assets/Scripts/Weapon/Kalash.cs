@@ -44,6 +44,7 @@ public class Kalash : MonoBehaviourPunCallbacks, Weapon
             endPoint = hits.point;                           // Der Endpunkt wird dort gesetzt wo etwas getroffen wurde.
         }
         ammunition--;                                       // Es wird 1 Munition verbraucht
+        GlobalSettings.ammunition = ammunition;
         photonView.RPC("showShot", RpcTarget.All, new Vector3(endPoint.x, endPoint.y, 0));
 
     }
@@ -51,6 +52,7 @@ public class Kalash : MonoBehaviourPunCallbacks, Weapon
     void Awake()
     {
         ammunition = maxAmmunition;
+        GlobalSettings.ammunition = ammunition;
         lastShot = Time.time;
     }
 
@@ -92,5 +94,6 @@ public class Kalash : MonoBehaviourPunCallbacks, Weapon
     {
         ammunition = maxAmmunition;               // Munition ist wieder voll
         lastShot = Time.time;                       // Man muss wieder kurz warten bis man schiessen kann.
+        GlobalSettings.ammunition = ammunition;
     }
 }

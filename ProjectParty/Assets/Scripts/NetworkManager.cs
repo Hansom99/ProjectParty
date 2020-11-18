@@ -64,6 +64,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.Log(id);
         GameObject player =  PhotonNetwork.GetPhotonView(id).gameObject;
         player.SetActive(true);
+        player.GetComponent<PlayerMovement>().attack = false;
         if (skin != GlobalSettings.skin)
         {
             skin = GlobalSettings.skin;
@@ -87,11 +88,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private void Health_killEvent(object sender, System.EventArgs e)
     {
         kills++;
+        GlobalSettings.kills = kills;
     }
 
     private void Health_deathEvent(object sender, System.EventArgs e)
     {
         deaths++;
+        GlobalSettings.deaths = deaths;
     }
 
     Vector3 rndRespawnPoint()

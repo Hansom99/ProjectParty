@@ -27,7 +27,7 @@ public class SelectUI : MonoBehaviour
     }
     public void select5()
     {
-        GlobalSettings.skin = 5;
+        GlobalSettings.skin = 4;
     }
 
 }

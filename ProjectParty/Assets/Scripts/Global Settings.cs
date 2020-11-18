@@ -17,6 +17,7 @@ public static class GlobalSettings
     public static bool objectCanBeTaken = false;
     public static int kills = 0;
     public static int deaths = 0;
+    public static bool inMenue = false;
 
 
 
