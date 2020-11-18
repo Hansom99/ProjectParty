@@ -8,6 +8,7 @@ public static class GlobalSettings
     //LOKALE VARIABLEN (NICHT SYNKRONISIERT)
     public static string selectedCharacter = "Player";
     public static string myTeam = "TeamA";
+    public static int skin = 0;
 
     //FÜR UI
     public static float specialAttackEnergy = 0;

@@ -11,8 +11,8 @@ public class SkinHandler : MonoBehaviourPunCallbacks
 
     public Transform skinPlace;
     public GameObject[] allCharacterPrefabs;
-    
 
+    bool isSet = false;
 
 
     public void setCharacter(int i)
@@ -25,6 +25,8 @@ public class SkinHandler : MonoBehaviourPunCallbacks
     [PunRPC]
     void addSkin(int i)
     {
+        GameObject oldSkin = null;
+        if (isSet) oldSkin = skin;
         skin = Instantiate(allCharacterPrefabs[i]);
         skin.transform.parent = skinPlace.transform;
         skin.transform.localPosition = Vector3.zero;
@@ -41,10 +43,17 @@ public class SkinHandler : MonoBehaviourPunCallbacks
         {
             w.transform.parent = cph.Hand.transform;
             w.transform.position = cph.Hand.transform.position + new Vector3(0.9f,0, 0);
+            
             Gun g = w.GetComponent<Gun>();
-            if (g != null) g.target = cph.Target.transform;
+            if (g != null)
+            {
+                w.transform.rotation = Quaternion.Euler(0, 0, -13);
+                g.target = cph.Target.transform;
+            }
 
         }
+        if (isSet) Destroy(oldSkin);
+        isSet = true;
 
 
     }
