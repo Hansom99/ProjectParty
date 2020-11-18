@@ -14,6 +14,8 @@ public static class GlobalSettings
     public static float maxSpecialAttackEnergy = 100;
     public static int ammunition = 0;
     public static bool objectCanBeTaken = false;
+    public static int kills = 0;
+    public static int deaths = 0;
 
 
 
