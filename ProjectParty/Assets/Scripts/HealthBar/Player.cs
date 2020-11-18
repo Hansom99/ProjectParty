@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth;
     public HealthBar healthbar;
+    public AmmoBar ammobar;
+
 
     // Start is called before the first frame update
     void Start()
