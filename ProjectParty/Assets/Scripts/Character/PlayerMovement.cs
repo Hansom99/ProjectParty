@@ -52,7 +52,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
 		horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 		verticalMove = Input.GetAxisRaw("Vertical") * climbSpeed *10 ;
-		Debug.Log(horizontalMove + " " + verticalMove);
 
 		if (Input.GetButtonDown("Jump"))
 		{

@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DeathMatch/HillMap.unity
     guid: 7182ece8616f29046ae455baa336d455
+  - enabled: 1
+    path: Assets/Scenes/XMasZombie.unity
+    guid: ab8386b9f1a0c5c4d85c6fccac17a4ca
   m_configObjects: {}

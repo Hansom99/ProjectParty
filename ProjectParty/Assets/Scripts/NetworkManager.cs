@@ -87,6 +87,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private void Health_killEvent(object sender, System.EventArgs e)
     {
+        Debug.Log("kill");
         kills++;
         GlobalSettings.kills = kills;
     }

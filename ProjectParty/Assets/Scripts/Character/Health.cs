@@ -7,20 +7,21 @@ using UnityEngine.EventSystems;
 
 public class Health : MonoBehaviourPunCallbacks
 {
+    public bool isPlayer = true;
     public float health;
     public float maxHealth = 100;
+    public bool healing = true;
+    
 
-    public float lastHitTime;
-
-
-
-    HealthBar healthbar;
     public GameObject HealthbarPrefab;
     public GameObject blood;
+
+    HealthBar healthbar;
     GameObject thatblood;
     Transform[] respawnPoints;
 
     bool alive = true;
+    private float lastHitTime;
 
     NetworkManager networkManager;
 
@@ -32,7 +33,6 @@ public class Health : MonoBehaviourPunCallbacks
     void Start()
     {
         networkManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
-
         healthbar = HealthbarPrefab.GetComponent<HealthBar>();
         health = maxHealth;
         healthbar.SetMaxHealth(maxHealth);
@@ -44,7 +44,6 @@ public class Health : MonoBehaviourPunCallbacks
         if (!alive) return;
         health -= damage;
         this.lastHitTime = Time.time;
-        Debug.Log("damage");
         photonView.RPC("updateHealth", RpcTarget.All, this.health, true);
         
 
@@ -67,7 +66,7 @@ public class Health : MonoBehaviourPunCallbacks
 
     private void FixedUpdate() //healen nach bestimmter zeit ohne schaden
     {
-        if(!photonView.IsMine)
+        if(!photonView.IsMine || !healing)
         {
             return;
         }
@@ -94,15 +93,17 @@ public class Health : MonoBehaviourPunCallbacks
             Destroy(thatblood, 1f);
         }
         
-        if (photonView.IsMine && this.health <= 0) death();
+        if ((photonView.IsMine || !isPlayer )&& this.health <= 0) death();
     }
 
     void death()
     {
 
         photonView.RPC("updateDeath", RpcTarget.All);
-        if (photonView.IsMine) deathEvent?.Invoke(this, EventArgs.Empty);
+        if (photonView.IsMine && isPlayer) deathEvent?.Invoke(this, EventArgs.Empty);
         else killEvent?.Invoke(this, EventArgs.Empty);
+
+        if (!isPlayer) GlobalSettings.kills++;
     }
 
     public void respawn()
@@ -114,6 +115,13 @@ public class Health : MonoBehaviourPunCallbacks
     [PunRPC]
     void updateDeath()
     {
+        if (!isPlayer)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+
         alive = false;
         Debug.Log("Died");
         if (photonView.IsMine)
