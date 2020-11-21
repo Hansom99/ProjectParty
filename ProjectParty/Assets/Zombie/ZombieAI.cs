@@ -13,6 +13,8 @@ public class ZombieAI : MonoBehaviour
     public float demagePerSecound = 2;
     public float maxHitDis = 2f;
 
+    //public GameObject UI;
+
     Path path;
     int currentWayPoint = 0;
     private Vector3 velocity = Vector3.zero;
@@ -22,6 +24,8 @@ public class ZombieAI : MonoBehaviour
     Rigidbody2D rb;
     private float m_MovementSmoothing = .05f;
     private bool climb;
+
+
     
 
 
@@ -70,6 +74,8 @@ public class ZombieAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        
+
         if (path == null) return;
 
         if (Vector2.Distance(transform.position, Target.position) < maxHitDis) Target.GetComponent<Health>().takeDamage(demagePerSecound*Time.fixedDeltaTime);

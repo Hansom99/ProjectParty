@@ -32,15 +32,18 @@ public class Health : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        
         networkManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
         healthbar = HealthbarPrefab.GetComponent<HealthBar>();
         health = maxHealth;
         healthbar.SetMaxHealth(maxHealth);
         healthbar.SetHealth(maxHealth);
+        if (!isPlayer) HealthbarPrefab.SetActive(false);
     }
     
     public void takeDamage(float damage)
     {
+        if(!isPlayer) HealthbarPrefab.SetActive(true);
         if (!alive) return;
         health -= damage;
         this.lastHitTime = Time.time;
