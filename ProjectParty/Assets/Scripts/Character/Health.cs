@@ -48,7 +48,7 @@ public class Health : MonoBehaviourPunCallbacks
         health -= damage;
         this.lastHitTime = Time.time;
         photonView.RPC("updateHealth", RpcTarget.All, this.health, true);
-        
+        if (health <= 0 && !photonView.IsMine) GlobalSettings.kills++;
 
     }
     public void heal(float health)
@@ -105,7 +105,6 @@ public class Health : MonoBehaviourPunCallbacks
         photonView.RPC("updateDeath", RpcTarget.All);
         if (photonView.IsMine && isPlayer) deathEvent?.Invoke(this, EventArgs.Empty);
         else killEvent?.Invoke(this, EventArgs.Empty);
-
         if (!isPlayer) GlobalSettings.kills++;
     }
 
@@ -131,8 +130,9 @@ public class Health : MonoBehaviourPunCallbacks
         {
             networkManager.startRespawnTimer();
         }
-        gameObject.SetActive(false);
 
+        gameObject.SetActive(false);
+        
     }
 
 
