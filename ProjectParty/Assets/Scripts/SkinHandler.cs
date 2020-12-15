@@ -34,7 +34,8 @@ public class SkinHandler : MonoBehaviourPunCallbacks
         skin.transform.parent = skinPlace.transform;
         skin.transform.localPosition = Vector3.zero;
         if (isSet) skin.transform.localScale = oldSkin.transform.localScale;
-        if (i > 2) skin.transform.localScale = skin.transform.localScale * 1.5f; //wenn i>2 dann sind es Wraiths und die müssen etwas grösser sein (just for good looking)
+        if (i > 2) skin.transform.localScale = new Vector3(1.5f, 1.5f, 1); //wenn i>2 dann sind es Wraiths und die müssen etwas grösser sein (just for good looking)
+        else skin.transform.localScale = new Vector3(1, 1, 1);
         cph = skin.GetComponent<CharacterPrefabHandler>();
 
         animatorView = skin.AddComponent<PhotonAnimatorView>();

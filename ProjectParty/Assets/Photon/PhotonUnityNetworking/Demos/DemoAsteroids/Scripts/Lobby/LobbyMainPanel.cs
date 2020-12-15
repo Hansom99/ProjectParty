@@ -11,6 +11,8 @@ namespace Photon.Pun.Demo.Asteroids
     {
         public string GameScene;
 
+        public Toggle toggle;
+
         [Header("Login Panel")]
         public GameObject LoginPanel;
 
@@ -263,6 +265,8 @@ namespace Photon.Pun.Demo.Asteroids
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
+
+            if (toggle.isOn) GameScene = "XMasZombie";
 
             PhotonNetwork.LoadLevel(GameScene);
         }
