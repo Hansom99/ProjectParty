@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//	Handles nearly all input by the User 
+//  Moves player 
+//  Attacks 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
 

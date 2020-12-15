@@ -5,6 +5,8 @@ using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 
+//     Loading energy  
+//     When G then play Animation 
 public class ShootFireBall : MonoBehaviourPunCallbacks, SpecialAttack , IOnEventCallback
 { 
     Animator animator;

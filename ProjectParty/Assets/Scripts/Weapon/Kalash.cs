@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+// shoots bullets towards mouseposition with a certain range, speed and damage
+// stronger than gun
 public class Kalash : MonoBehaviourPunCallbacks, Weapon
 {
     // Kalash Variablen:

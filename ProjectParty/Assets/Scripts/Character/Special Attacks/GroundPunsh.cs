@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//     Loading energy  
+//     When G then play Animation 
 public class GroundPunsh : MonoBehaviourPunCallbacks, SpecialAttack , IOnEventCallback
 {
     Animator animator;

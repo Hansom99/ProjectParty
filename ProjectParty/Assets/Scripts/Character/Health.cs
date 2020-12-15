@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+//    Handles Health of player 
+//    Taking damage
+//    Synchronizing with photon on all devices
 public class Health : MonoBehaviourPunCallbacks
 {
     public bool isPlayer = true;

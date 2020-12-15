@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//     Handles spawning and overall game stuff 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public GameObject myPlayer;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// For the ammo bar in UI
+// Sets the value of current ammo and adjusts slider accordingly 
 public class AmmoBar : MonoBehaviour
 {
     public Slider slider;

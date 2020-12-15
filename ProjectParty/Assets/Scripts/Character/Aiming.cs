@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon;
 using Photon.Pun;
 
+//         On the arm of the Skins 
+//        Rotates arm towards mouse position 
 public class Aiming : MonoBehaviourPunCallbacks
 {
 

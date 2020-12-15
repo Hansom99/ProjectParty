@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//     For the HealthBar in UI 
+//    Sets the value of current health and adjusts slider accordingly 
 public class HealthBar : MonoBehaviour
 {
 

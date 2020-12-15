@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+// shoots bullets towards mouseposition with a certain range, speed and damage
 public class Gun : MonoBehaviourPunCallbacks, Weapon
 { 
     // Gun Variablen:

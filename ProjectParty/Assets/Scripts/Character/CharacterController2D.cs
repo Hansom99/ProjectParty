@@ -1,6 +1,8 @@
 using Photon.Pun;
 using UnityEngine;
 
+//     Handles movement form playerMovement.cs 
+//     Uses Rigidbody2d to move Character (which is synchronized by Photon on all devices) 
 public class CharacterController2D : MonoBehaviourPunCallback
 {
 	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
